@@ -40,10 +40,7 @@ def classification_model(tp, fp, fn):
     print(f'Precision: {precision}')
     print(f'Recall: {recall}')
     print(f'F1-score: {f1_score}')
-
-
-
-
+    
 if __name__ == "__main__":
     classification_model(2, 3, 4)
 
