@@ -1,24 +1,46 @@
-def word_count(file_path):
-    word_counts = {}
+class Stack:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.stack = []
 
-    # Đọc nội dung file
-    with open("D:\AIO_2024\AIO-2024-Exercise\P1_data.txt", 'r') as file:
-        text = file.read()
-    
-    # Chuyển nội dung thành chữ thường
-    text = text.lower()
-    
-    # Tách nội dung thành các từ
-    words = text.split()
-    
-    # Đếm số lần xuất hiện của mỗi từ
-    for word in words:
-        if word in word_counts:
-            word_counts[word] += 1
+    def is_empty(self):
+        return len(self.stack) == 0
+
+    def is_full(self):
+        return len(self.stack) == self.capacity
+
+    def push(self, value):
+        if not self.is_full():
+            self.stack.append(value)
         else:
-            word_counts[word] = 1
-    
-    return word_counts
+            raise OverflowError("Stack is full")
 
-file_path = 'P1_data.txt'
-print(word_count(file_path))
+    def pop(self):
+        if not self.is_empty():
+            return self.stack.pop()
+        else:
+            raise IndexError("Stack is empty")
+
+    def top(self):
+        if not self.is_empty():
+            return self.stack[-1]
+        else:
+            raise IndexError("Stack is empty")
+
+
+stack1 = Stack(capacity=5)
+
+stack1.push(1)
+stack1.push(2)
+
+print(stack1.is_full())  # Output: False
+
+print(stack1.top())  # Output: 2
+
+print(stack1.pop())  # Output: 2
+
+print(stack1.top())  # Output: 1
+
+print(stack1.pop())  # Output: 1
+
+print(stack1.is_empty())  # Output: True

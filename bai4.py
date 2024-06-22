@@ -1,34 +1,46 @@
-def levenshtein_distance(source, target):
-    # Bước 1: Khởi tạo ma trận D với kích thước (M+1)x(N+1)
-    M = len(source)
-    N = len(target)
-    D = [[0] * (N + 1) for _ in range(M + 1)]
+class Queue:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.queue = []
 
-    # Bước 2: Khởi tạo hàng và cột đầu tiên
-    for i in range(M + 1):
-        D[i][0] = i
-    for j in range(N + 1):
-        D[0][j] = j
+    def is_empty(self):
+        return len(self.queue) == 0
 
-    # Bước 3: Tính toán các giá trị cho các ô còn lại trong ma trận
-    for i in range(1, M + 1):
-        for j in range(1, N + 1):
-            del_cost = D[i-1][j] + 1
-            ins_cost = D[i][j-1] + 1
-            if source[i-1] == target[j-1]:
-                sub_cost = D[i-1][j-1]
-            else:
-                sub_cost = D[i-1][j-1] + 1
-            D[i][j] = min(del_cost, ins_cost, sub_cost)
+    def is_full(self):
+        return len(self.queue) == self.capacity
 
-    # Bước 4: Trả về giá trị tại ô cuối cùng D[M][N]
-    return D[M][N]
+    def enqueue(self, value):
+        if not self.is_full():
+            self.queue.append(value)
+        else:
+            raise OverflowError("Queue is full")
 
-# Ví dụ
-source = "yu"
-target = "you"
-print(levenshtein_distance(source, target))  
+    def dequeue(self):
+        if not self.is_empty():
+            return self.queue.pop(0)
+        else:
+            raise IndexError("Queue is empty")
 
-source = "kitten"
-target = "sitting"
-print(levenshtein_distance(source, target))  
+    def front(self):
+        if not self.is_empty():
+            return self.queue[0]
+        else:
+            raise IndexError("Queue is empty")
+
+
+queue1 = Queue(capacity=5)
+
+queue1.enqueue(1)
+queue1.enqueue(2)
+
+print(queue1.is_full())  # Output: False
+
+print(queue1.front())  # Output: 1
+
+print(queue1.dequeue())  # Output: 1
+
+print(queue1.front())  # Output: 2
+
+print(queue1.dequeue())  # Output: 2
+
+print(queue1.is_empty())  # Output: True

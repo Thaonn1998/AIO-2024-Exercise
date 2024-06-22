@@ -1,15 +1,37 @@
-def max_in_sliding_window(num_list, k):
-    if not num_list or k <= 0:
-        return []
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
-    result = []
-    for i in range(len(num_list) - k + 1):
-        window = num_list[i:i + k]
-        max_value = max(window)
-        result.append(max_value)
-    
-    return result
 
-num_list = [3, 4, 5, 1, -44, 5, 10, 12, 33, 1]
-k = 3
-print(max_in_sliding_window(num_list, k))
+class Softmax(nn.Module):
+    def __init__(self):
+        super(Softmax, self).__init__()
+
+    def forward(self, x):
+        exp_x = torch.exp(x)
+        sum_exp_x = torch.sum(exp_x)
+        return exp_x / sum_exp_x
+
+
+class SoftmaxStable(nn.Module):
+    def __init__(self):
+        super(SoftmaxStable, self).__init__()
+
+    def forward(self, x):
+        max_x = torch.max(x)
+        exp_x = torch.exp(x - max_x)
+        sum_exp_x = torch.sum(exp_x)
+        return exp_x / sum_exp_x
+
+
+# Test examples
+data = torch.Tensor([1, 2, 3])
+
+softmax = Softmax()
+output = softmax(data)
+print(output)
+
+
+softmax_stable = SoftmaxStable()
+output_stable = softmax_stable(data)
+print(output_stable)
